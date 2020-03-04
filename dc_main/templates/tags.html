@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<link rel="stylesheet" href="{% static 'css/tags.css' %}">
+<title>DarkCreator</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 dc_col_left">
+    <form class="" action="" method="post">
+      <input type="checkbox" name="tag" value="1">
+      <input type="checkbox" name="tag" value="2">
+      <input type="checkbox" name="tag" value="3">
+      <br />
+      <input type="submit" name="tag_choose" value="Choose">
+    </form>
+    </div>
+    <div class="col-md-8">
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'js/tags.css' %}">
+</script>
+{% endblock %}

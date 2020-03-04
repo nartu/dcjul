@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<!-- <link rel="stylesheet" href="{% static 'css/tags.css' %}"> -->
+<title>DarkCreator</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<h2>Tag list</h2>
+{% for tag in tags %}
+  <div class="tag">
+    <div id="tag_info">
+      <span><strong>{{tag.pk}}</strong></span>
+      <span>{{tag.tag_name}}</span>
+      <span>{{tag.created_date}}</span>
+    </div>
+    <div id="media_info">
+      {% for media in content %}
+        <!-- <span>{{media.pk}}: {{media.type}}, {{media.source}}</span> -->
+      {{media}}
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+</div>
+<div class="test">
+  {{tags}}
+  <br>
+  {% cycle 1 as mv %}
+  {{mv}}
+  {{content.1}}
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="{% static 'js/tags.css' %}">
+</script>
+{% endblock %}
