@@ -2,35 +2,47 @@
 {% load static %}
 
 {% block title %}
-<!-- <link rel="stylesheet" href="{% static 'css/tags.css' %}"> -->
+<link rel="stylesheet" href="{% static 'css/tag_list.css' %}">
 <title>DarkCreator</title>
 {% endblock %}
 
 {% block content %}
 <div class="container">
 <h2>Tag list</h2>
-{% for tag in tags %}
+{% for tag_entry in content.values %}
   <div class="tag">
     <div id="tag_info">
-      <span><strong>{{tag.pk}}</strong></span>
-      <span>{{tag.tag_name}}</span>
-      <span>{{tag.created_date}}</span>
-    </div>
-    <div id="media_info">
-      {% for media in content %}
-        <!-- <span>{{media.pk}}: {{media.type}}, {{media.source}}</span> -->
-      {{media}}
-      {% endfor %}
+      <p>
+        <span><strong>{{tag_entry.tag.pk}}</strong></span>
+        <span>{{tag_entry.tag.tag_name}}</span>
+        <span>{{tag_entry.tag.created_date}}</span>
+      </p>
+      <p>Media:</p>
+      <div id="content_media_list">
+
+        {% for media in tag_entry.media %}
+        <div class="media_entry">
+          <p>
+            <span><strong>{{media.pk}} </strong></span>
+            <span>{{media.type}} from {{media.source}} </span>
+            <span>{% firstof media.name %}</span>
+          </p>
+          {% if media.url %}
+            <img src="{{media.url}}" width="150">
+          {% endif %}
+        </div>
+        {% endfor %}
+
+      </div>
     </div>
   </div>
 {% endfor %}
 </div>
 <div class="test">
-  {{tags}}
+  <!-- {{tags}}
   <br>
-  {% cycle 1 as mv %}
-  {{mv}}
-  {{content.1}}
+  {{content}}
+  <br> -->
 
 </div>
 {% endblock %}
