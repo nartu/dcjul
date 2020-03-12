@@ -1,0 +1,11 @@
+#content_media_list {
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+#content_media_list .media_entry {
+  margin: 10px;
+  padding-bottom: 10px;
+  /* border: solid 1px;
+  background-color: #343a40; */
+}

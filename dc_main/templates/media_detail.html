@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<!-- <link rel="stylesheet" href="{% static 'css/dummy.css' %}"> -->
+{% if media.type == "image" %}
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+{% endif %}
+<title>DarkCreator</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  {% if media.name %}<h2>{{media.name}}</h2>{% endif %}
+  <div class="row mt-4 mb-3">
+    <div class="col-md-auto">
+      <a data-fancybox="gallery" href="{{media.url}}">
+        <img src="{{media.url}}" width="250px" alt="{{media.name}}">
+      </a>
+    </div>
+  </div>
+  <p>Type: {{media.type}}</p>
+  <p>Source: {{media.source}}</p>
+  <p>Description in the source: {{media.description_auto}}</p>
+  <p>Description in the in addition: {{media.description_auto}}</p>
+  <p>Created: {{media.created_date}}</p>
+  <p>Added: {{media.when_add_date}}</p>
+</div>
+{% endblock %}
+
+{% block js %}
+<!-- <script type="text/javascript" src="{% static 'js/dummy.js' %}">
+</script> -->
+{% if media.type == "image" %}
+  <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+{% endif %}
+{% endblock %}
