@@ -3,3 +3,11 @@ body {
   color: #b380ff;
   padding-left: 15px;
 }
+
+a {
+  color: #b380ff;
+}
+
+a:hover {
+  color: #b380ff;
+}

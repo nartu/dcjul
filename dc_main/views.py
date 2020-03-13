@@ -23,9 +23,23 @@ def tag_list(request):
     return render(request,'tag_list.html',{'tags': tags, 'content': content})
 
 def tag_detail(request):
+    """ All about tag: created, language, media """
     pass
 
 def media_detail(request,pk):
     # media = Media.objects.filter(pk=pk)
     media = get_object_or_404(Media,pk=pk)
     return render(request,'media_detail.html',{'media': media})
+
+def tag_link(request,pk):
+    tags = Tag.objects.order_by('pk')
+    tag_target = get_object_or_404(Tag,pk=pk)
+    media_list = list()
+    media_ids = TagMediaBond.objects.filter(tag_id=tag_target.pk)
+    for media in media_ids:
+        media_list += Media.objects.filter(pk=media.pk)
+    return render(request,'tag_link.html',{
+        'tags': tags,
+        'tag_target': tag_target,
+        'media_list': media_list
+    })

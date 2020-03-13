@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<link rel="stylesheet" href="{% static 'css/tag_link.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+<title>DarkCreator</title>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <header class="navbar">
+  </header>
+  <div class="row  mt-4 border">
+    <div class="col-md-2 pr-2 tags_side_bar">
+      {% for tag in tags %}
+        <p>
+          {% if tag.tag_name == tag_target.tag_name %}
+            <strong>{{tag.tag_name}}</strong>
+          {% else %}
+            <a href="{% url 'tag_link' tag.pk %}">{{tag.tag_name}}</a>
+          {% endif %}
+        </p>
+      {% endfor %}
+    </div>
+    <div class="col-md-10 media_bar pl-4">
+      {% for media in media_list %}
+      <div class="media mb-4">
+        <a data-fancybox="gallery" href="{{media.url}}">
+          <img src="{{media.url}}" width="120px" alt="{{media.name}}">
+        </a>
+        <div class="media-body ml-3">
+          {% if media.name %}
+            <h5 class="mt-0">{{media.name}}</h5>
+          {% endif %}
+          {% if media.description_auto %}
+            <div class="description_asis">
+              {{media.description_auto}}
+            </div>
+          {% endif %}
+          {% if media.description_me %}
+            <div class="description_exclusive">
+              {{media.description_me}}
+            </div>
+          {% endif %}
+          {% if not media.description_auto and not media.description_me %}
+            <div class="description_asis">
+              Some {{media.type}} from {{media.source}}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+{% endblock %}
