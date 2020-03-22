@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Connect is {{status}}</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-auto">
+          <p>Step: {{step}}</p>
+          <p>Status: {{status}}</p>
+          <p>Session:</p>
+          <pre>{{session}}</pre>
+          <p>Error: {{error}}</p>
+          {% if error %}
+            <p>Error description: {{error_description}}</p>
+          {% endif %}
+          <div id="content">
+            User: {{content.first_name}} {{content.last_name}}
+            <br>
+            ID: {{content.id}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
