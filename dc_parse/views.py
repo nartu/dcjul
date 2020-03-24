@@ -1,27 +1,9 @@
 from django.shortcuts import render, redirect
-from urllib.parse import urlencode, urlparse
-from dc.settings import BASE_DIR
 import os
 import requests
-import json
+from dc_parse.utils import write_json, build_uri
+from dc_parse.utils import get_vk_cookies, vk_method
 from django.contrib.sessions.models import Session
-
-def write_json(data='',filename='answer.json'):
-    save_dir = os.path.join(BASE_DIR,'dc_parse','debug','json')
-    filename = os.path.join(save_dir,filename)
-    with open(filename, 'w') as file:
-        #write to file
-        json.dump(data, file, indent=2,ensure_ascii=False)
-
-def build_uri(url_src,url_query={}):
-    url = urlparse(url_src)
-    base = url.scheme + '://' + url.netloc + url.path
-    if len(url_query)>0:
-        query = '?' + urlencode(url_query, safe='/:?&=')
-    else:
-        query = ''
-    url_result = base + query
-    return url_result
 
 def vk_connect(request):
         code = request.GET.get('code')
@@ -98,14 +80,14 @@ def vk_connect_test(request):
             'access_token': vk_token,
             'v': '5.103'
         }
-        url = build_uri('https://api.vk.com/method/'+method_name,parameters)
+        # url = build_uri('https://api.vk.com/method/'+method_name,parameters)
         response = requests.post(os.path.join('https://api.vk.com/method',method_name)
             ,data=parameters)
         rj = response.json()
         content = rj['response'][0]
         # write_json(response.json(),'ans1.json')
     except KeyError:
-        raise KeyError
+        # raise KeyError
         session = 'Unknown session'
         status = 'fail'
     except Exception:
@@ -120,13 +102,16 @@ def vk_connect_test(request):
         'error': error,
         'error_description': error_description})
 
-def cookie_test(request):
-    request.session.set_test_cookie()
-    request.session["fav_color"] = "blue"
-    request.session["xz"] = "test_sting"
-    cookies = request.COOKIES
-    test = request.session.test_cookie_worked()
-    s = Session.objects.get(pk=cookies['sessionid'])
-    test = (s.session_data, s.expire_date)
-    test = s.get_decoded()
-    return render(request,'cookie_test.html',{'cookies': cookies, 'test': test})
+def vk_get_photo_album(request,album):
+    vk_token,vk_user = get_vk_cookies(request)
+    method_name = 'photos.getAlbums'
+    parameters = {
+        'album_ids': 199663597,
+        'count': 1,
+        'need_covers': 1
+    }
+    content = vk_method(method_name,vk_token,parameters)
+    return render(request,'vk_get_photo_album.html',{
+        'content': content,
+        'album': album
+        })
