@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Get photo</title>
+  </head>
+  <body>
+    <div class="container" style="width: 90%">
+      <p>photo_id: {{id}}</p>
+      <p>album_id: {{album}}</p>
+      {% for img in sizes %}
+        <p>{{img.type}}</p>
+        <div class="img" style="margin-bottom: 15px">
+          <img src="{{img.url}}" alt="">
+        </div>
+      {% endfor %}
+    </div>
+  </body>
+</html>

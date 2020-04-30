@@ -3,7 +3,11 @@ import os
 import requests
 from dc_parse.utils import write_json, build_uri
 from dc_parse.utils import get_vk_cookies, vk_method
+from dc_parse.utils import vk_json_image_url, vk_json_psql_time
 from django.contrib.sessions.models import Session
+from dc_main.models import Media, Tag, TagMediaBond
+from dc_parse.models import MediaVkPhoto, MediaVkPhotoThumbnail
+from django.db import IntegrityError
 
 def vk_connect(request):
         code = request.GET.get('code')
@@ -18,7 +22,7 @@ def vk_connect(request):
             # response = requests.get(url)
             response = requests.post('https://oauth.vk.com/access_token',data=url_data)
             rj = response.json()
-            write_json(response.json(),'auth3.json')
+            write_json(response.json(),'auth10.json')
             if rj.get('error'):
                 return render(request,'vk_connect_test.html',{
                 'step': 2,
@@ -39,7 +43,7 @@ def vk_connect(request):
             url_data = {
                 'client_id': 3410588,
                 'display': 'popup',
-                'redirect_uri': build_uri(this_uri),
+                'redirect_uri': build_uri(this_uri),    # '/' in the end
                 'scope': 'photos',
                 'response_type': 'code',
                 'v': '5.103'}
@@ -48,6 +52,7 @@ def vk_connect(request):
             response = requests.get(url)
             try:
                 rj = response.json()
+                write_json(rj,'ans_er_1.json')
                 if rj['error']:
                     return render(request,'vk_connect_test.html',{
                     'step': 1,
@@ -104,14 +109,52 @@ def vk_connect_test(request):
 
 def vk_get_photo_album(request,album):
     vk_token,vk_user = get_vk_cookies(request)
-    method_name = 'photos.getAlbums'
+    method_name = 'photos.get'
     parameters = {
-        'album_ids': 199663597,
-        'count': 1,
-        'need_covers': 1
+        'album_id': album,  # 199663597
+        'count': 2,
+        'photo_sizes': 1,
+        'extended': 1,
+        'offset': 5,
+        # 'photo_ids': 456239414
     }
+    try:
+        tags = request.GET.get('tags').split(',')
+    except AttributeError:
+        tags = ''
     content = vk_method(method_name,vk_token,parameters)
+    # write_json(content,'photo.json')
+    # sizes = content['items'][0]['sizes']
+    for img in content['items']:
+        # insert in psql, url - unique
+        # dc_main.models.Media
+        try:
+            media_new = Media.objects.create(
+                type = 'image',
+                source = 'vk',
+                url = vk_json_image_url(img,include_thumbnail=False)['src'],
+                description_auto = img['text'],
+                created_date = vk_json_psql_time(img)
+            )
+        except IntegrityError:  # db error, exist url unique
+            continue
+        except Exception as e:
+            raise e
+        # dc_main.models.Tag TagMediaBond
+        for tag in tags:
+            try:
+                tag_obj = Tag.objects.get(name=tag)
+            except DoesNotExist:
+                tag_obj = Tag.objects.create(name=tag)
+            TagMediaBond.objects.create(
+                media = media_new,
+                tag = tag_obj
+            )
+        # dc_parse.models.MediaVkPhoto
+
     return render(request,'vk_get_photo_album.html',{
-        'content': content,
-        'album': album
+        # 'content': content,
+        'imgs': content['items'],
+        'album': album,
+        'tags': tags
         })

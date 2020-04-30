@@ -4,6 +4,7 @@ import json
 from urllib.parse import urlencode, urlparse
 from dc.settings import BASE_DIR
 from django.contrib.sessions.models import Session
+import datetime
 
 def write_json(data='',filename='answer.json'):
     save_dir = os.path.join(BASE_DIR,'dc_parse','debug','json')
@@ -51,3 +52,34 @@ def vk_method(method_name,access_token,parameters={},v='5.103'):
         content = rj['response']
     write_json(rj,'ans4.json')
     return content
+
+def vk_json_image_url(image,include_src=True,include_thumbnail=True):
+# image url, src - z, thubnails - smx
+# image from json answer ans['items'][n] n=0...ans['count']-1
+    result = dict()
+    thumbnail = dict()
+    thumbnail_mask = list('smx')
+    src_mask = list('wzyxms')
+    sizes_of_image = list()
+    for size in image['sizes']:
+        sizes_of_image += size['type']
+    if(include_src):
+        for t in src_mask:
+            if t in sizes_of_image:
+                i = sizes_of_image.index(t)
+                src = image['sizes'][i]['url']
+                break
+        result['src'] = src
+    if(include_thumbnail):
+        for t in thumbnail_mask:
+            if t in sizes_of_image:
+                i = sizes_of_image.index(t)
+                thumbnail[t] = image['sizes'][i]['url']
+        result['thumbnail'] = thumbnail
+    return result
+
+def vk_json_psql_time(image):
+# from unix to postgres standart timestamp
+# image the same in vk_json_image_url
+    date = datetime.datetime.fromtimestamp(image['date'])
+    return date

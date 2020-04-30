@@ -2,14 +2,14 @@ from django.db import models
 from django.utils import timezone
 
 class Tag(models.Model):
-    """id, tag_name, created_date"""
+    """id, name, created_date"""
 
-    tag_name = models.CharField(max_length=90)
+    name = models.CharField(max_length=90,unique=True)
     created_date = models.DateTimeField(
             default=timezone.now)
 
     def __str__(self):
-        return self.tag_name
+        return self.name
 
 class Media(models.Model):
     """
@@ -20,7 +20,7 @@ class Media(models.Model):
 
     type = models.CharField(max_length=9)
     source  = models.CharField(max_length=12)
-    url = models.URLField(max_length=255)
+    url = models.URLField(max_length=255,unique=True)
     url_thumbnail = models.URLField(max_length=255, blank=True)
     description_auto = models.TextField(blank=True)
     description_me = models.TextField(blank=True)
@@ -41,4 +41,4 @@ class TagMediaBond(models.Model):
          name='unique_bond')]
 
     def __str__(self):
-        return "{}+{}".format(self.media.id,self.tag.tag_name)
+        return "{}+{}".format(self.media.id,self.tag.name)

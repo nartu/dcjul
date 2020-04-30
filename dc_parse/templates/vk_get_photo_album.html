@@ -6,11 +6,22 @@
   </head>
   <body>
     <div class="container" style="width: 90%">
+      Album: {{album}}
+      Auto tags:
+      {% for tag in tags %}
+        {% if tag is tags|last %}
+          {{tag}}
+        {% else %}
+          {{tag}},
+        {% endif %}
+      {% endfor %}
 
-        {{content}}
-
-      <br>
-      {{album}}
+      {% for img in imgs %}
+        <p>{{img.id}}</p>
+        <div class="img" style="margin-bottom: 15px">
+          <img src="{{img.sizes.0.url}}" alt="">
+        </div>
+      {% endfor %}
     </div>
   </body>
 </html>

@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import MediaVkPhoto, MediaVkPhotoThumbnail
 
-# Register your models here.
+admin.site.register(MediaVkPhoto)
+admin.site.register(MediaVkPhotoThumbnail)
