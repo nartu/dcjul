@@ -2,11 +2,10 @@ from django.test import TestCase
 from urllib.parse import urlencode, quote_plus, quote
 from urllib.parse import urlparse
 import os
+from dc_parse.models import MediaVkPhoto
+from dc_main.models import Media, Tag, TagMediaBond
 
-def write_json(date='', filename='answer.json'):
-    save_dir = os.path.join('dc_parse','debug','json')
-    filename = os.path.join(save_dir,filename)
-    return filename
-
-
-print(write_json())
+class DbTest(TestCase):
+    def main():
+        media = Media.objects.get(pk=120)
+        MediaVkPhoto.objects.get(media=media)

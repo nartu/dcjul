@@ -115,7 +115,7 @@ def vk_get_photo_album(request,album):
         'count': 2,
         'photo_sizes': 1,
         'extended': 1,
-        'offset': 5,
+        'offset': 7,
         # 'photo_ids': 456239414
     }
     try:
@@ -128,16 +128,17 @@ def vk_get_photo_album(request,album):
     for img in content['items']:
         # insert in psql, url - unique
         # dc_main.models.Media
+        img_url = vk_json_image_url(img,include_thumbnail=False)
         try:
             media_new = Media.objects.create(
                 type = 'image',
                 source = 'vk',
-                url = vk_json_image_url(img,include_thumbnail=False)['src'],
+                url = img_url['src'],
                 description_auto = img['text'],
                 created_date = vk_json_psql_time(img)
             )
         except IntegrityError:  # db error, exist url unique
-            continue
+            media_new = Media.objects.get(url=img_url['src'])
         except Exception as e:
             raise e
         # dc_main.models.Tag TagMediaBond
@@ -151,6 +152,16 @@ def vk_get_photo_album(request,album):
                 tag = tag_obj
             )
         # dc_parse.models.MediaVkPhoto
+        if(not MediaVkPhoto.objects.get(media=media_new).exists()):
+            MediaVkPhoto.objects.create(
+                media = media_new,
+                photo = img['id'],
+                album = img['album_id'],
+                post = img.get('post_id'),
+                comments = bool(img['comments']['count']),
+                tags = booll(img['tags']['count'])
+            )
+
 
     return render(request,'vk_get_photo_album.html',{
         # 'content': content,
