@@ -16,6 +16,14 @@
         {% endif %}
       {% endfor %}
 
+      <p>Добавлено медиа: {{resume.media_new}}</p>
+      <p>Уже существовало: {{resume.media_existed}}</p>
+      <p>Добавлено вк фото иноф: {{resume.vk_photo_info_add}}</p>
+      <p>Добавлено вк коллекция thumbnail: {{resume.vk_thumbnail_add}}</p>
+      <p>Добавлено тэгов: {{resume.tag_new}}</p>
+      <p>Существовало тэгов: {{resume.tag_existed}}</p>
+      <p>Привязано тэгов (media+tag): {{resume.tag_bonds}}</p>
+
       {% for img in imgs %}
         <p>{{img.id}}</p>
         <div class="img" style="margin-bottom: 15px">

@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <!-- lib files -->
+    <link rel="stylesheet" href="{% static 'common/css/main.css' %}">
+    <!-- local files -->
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <title>Test  static</title>
+  </head>
+  <body>
+    <div class="static_show">
+      {% static 'myau'%} <br>
+      {% get_static_prefix %} <br>
+      {% get_media_prefix %} <br>
+      {{ static_root }}
+    </div>
+  </body>
+</html>

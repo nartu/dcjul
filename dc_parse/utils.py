@@ -5,6 +5,8 @@ from urllib.parse import urlencode, urlparse
 from dc.settings import BASE_DIR
 from django.contrib.sessions.models import Session
 import datetime
+from dc_main.models import Media, Tag, TagMediaBond
+from django.db import IntegrityError
 
 def write_json(data='',filename='answer.json'):
     save_dir = os.path.join(BASE_DIR,'dc_parse','debug','json')
@@ -50,7 +52,7 @@ def vk_method(method_name,access_token,parameters={},v='5.103'):
         content = 'error' + '\n' + rj['error']['error_msg']
     else:
         content = rj['response']
-    write_json(rj,'ans4.json')
+    # write_json(rj,'ans4.json')
     return content
 
 def vk_json_image_url(image,include_src=True,include_thumbnail=True):
@@ -58,7 +60,7 @@ def vk_json_image_url(image,include_src=True,include_thumbnail=True):
 # image from json answer ans['items'][n] n=0...ans['count']-1
     result = dict()
     thumbnail = dict()
-    thumbnail_mask = list('smx')
+    thumbnail_mask = list('smqx')
     src_mask = list('wzyxms')
     sizes_of_image = list()
     for size in image['sizes']:
@@ -83,3 +85,34 @@ def vk_json_psql_time(image):
 # image the same in vk_json_image_url
     date = datetime.datetime.fromtimestamp(image['date'])
     return date
+
+def put_tags_to_db(tags, media):
+    """ tags - array, media - dc_main.models.Media,
+        to dc_main.models.Tag, TagMediaBond,
+        return resume """
+    resume = {
+            'tag_new': 0,
+            'tag_existed': 0,
+            'tag_bonds': 0
+            }
+    for tag in tags:
+        try:
+            tag_obj = Tag.objects.get(name=tag)
+            resume['tag_existed'] += 1
+        except Tag.DoesNotExist:
+            tag_obj = Tag.objects.create(name=tag)
+            resume['tag_new'] += 1
+        # except NameError:
+        #     raise NameError
+        except Exception as e:
+            raise e
+        try:
+            TagMediaBond.objects.create(
+                media = media,
+                tag = tag_obj
+            )
+            resume['tag_bonds'] += 1
+        except IntegrityError:  # if in db already (import django.db)
+            pass
+
+    return resume

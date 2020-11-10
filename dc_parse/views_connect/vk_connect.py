@@ -3,11 +3,7 @@ import os
 import requests
 from dc_parse.utils import write_json, build_uri
 from dc_parse.utils import get_vk_cookies, vk_method
-from dc_parse.utils import vk_json_image_url, vk_json_psql_time
 from django.contrib.sessions.models import Session
-from dc_main.models import Media, Tag, TagMediaBond
-from dc_parse.models import MediaVkPhoto, MediaVkPhotoThumbnail
-from django.db import IntegrityError
 
 def vk_connect(request):
         code = request.GET.get('code')
@@ -54,11 +50,12 @@ def vk_connect(request):
                 rj = response.json()
                 write_json(rj,'ans_er_1.json')
                 if rj['error']:
-                    return render(request,'vk_connect_test.html',{
+                    return render(request,'connect/vk_connect_test.html',{
                     'step': 1,
                     'status': 'fail',
                     'error': rj['error'],
                     'error_description': rj['error_description']+'\n'+url
+                    +'\n'+request.build_absolute_uri()
                     })
             except:   # No errors
                 return redirect(url)
@@ -93,79 +90,53 @@ def vk_connect_test(request):
         # write_json(response.json(),'ans1.json')
     except KeyError:
         # raise KeyError
-        session = 'Unknown session'
+        session_raw = 'Unknown session'
         status = 'fail'
     except Exception:
         raise Exception
         session = 'WTF?'
         status = 'Unknown'
-    return render(request,'vk_connect_test.html',{
+    return render(request,'connect/vk_connect_test.html',{
         'content': content,
         'step': step,
-        'session': 'session',
+        'session': session_raw,
         'status': status,
         'error': error,
         'error_description': error_description})
 
-def vk_get_photo_album(request,album):
-    vk_token,vk_user = get_vk_cookies(request)
-    method_name = 'photos.get'
-    parameters = {
-        'album_id': album,  # 199663597
-        'count': 2,
-        'photo_sizes': 1,
-        'extended': 1,
-        'offset': 7,
-        # 'photo_ids': 456239414
-    }
+def vk_disconnect(request):
+    step = 0
+    error = None
+    error_description = None
+    content = ''
+    cookies = request.COOKIES
     try:
-        tags = request.GET.get('tags').split(',')
-    except AttributeError:
-        tags = ''
-    content = vk_method(method_name,vk_token,parameters)
-    # write_json(content,'photo.json')
-    # sizes = content['items'][0]['sizes']
-    for img in content['items']:
-        # insert in psql, url - unique
-        # dc_main.models.Media
-        img_url = vk_json_image_url(img,include_thumbnail=False)
+        session_raw = Session.objects.get(pk=cookies['sessionid'])
+        session = session_raw.get_decoded()
+        status = 'session exists'
+        # Test VK API
         try:
-            media_new = Media.objects.create(
-                type = 'image',
-                source = 'vk',
-                url = img_url['src'],
-                description_auto = img['text'],
-                created_date = vk_json_psql_time(img)
-            )
-        except IntegrityError:  # db error, exist url unique
-            media_new = Media.objects.get(url=img_url['src'])
-        except Exception as e:
-            raise e
-        # dc_main.models.Tag TagMediaBond
-        for tag in tags:
-            try:
-                tag_obj = Tag.objects.get(name=tag)
-            except DoesNotExist:
-                tag_obj = Tag.objects.create(name=tag)
-            TagMediaBond.objects.create(
-                media = media_new,
-                tag = tag_obj
-            )
-        # dc_parse.models.MediaVkPhoto
-        if(not MediaVkPhoto.objects.get(media=media_new).exists()):
-            MediaVkPhoto.objects.create(
-                media = media_new,
-                photo = img['id'],
-                album = img['album_id'],
-                post = img.get('post_id'),
-                comments = bool(img['comments']['count']),
-                tags = booll(img['tags']['count'])
-            )
-
-
-    return render(request,'vk_get_photo_album.html',{
-        # 'content': content,
-        'imgs': content['items'],
-        'album': album,
-        'tags': tags
-        })
+            # del session['vk_auth_access_token']
+            # del session['vk_auth_user_id']
+            # del session['vk_auth_expires_in']
+            request.session.flush()
+            status += ', del'
+        except KeyError:
+            status += ', vk api was not connect'
+    # if session not exist
+    except KeyError:
+        # raise KeyError
+        session_raw = 'Unknown session'
+        status = 'fail'
+    except Exception:
+        raise Exception
+        session = 'WTF?'
+        status = 'Unknown'
+    # return redirect('dc_parse:vk_connect_test')
+    return render(request,'connect/vk_connect_test.html',{
+        'content': content,
+        'step': step,
+        'session': session_raw + ' | ' + request.session,
+        'status': status,
+        'error': error,
+        'error_description': error_description})

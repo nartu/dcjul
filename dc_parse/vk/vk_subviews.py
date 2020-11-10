@@ -10,7 +10,7 @@ def vk_utils_photo_info(request):
         'count': 1,
         'photo_sizes': 1,
         'extended': 1,
-        'offset': 5,
+        'offset': 8,
         # 'photo_ids': 456239414
     }
     content = vk_method(method_name,vk_token,parameters)

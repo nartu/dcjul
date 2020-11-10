@@ -17,9 +17,18 @@
             <p>Error description: {{error_description}}</p>
           {% endif %}
           <div id="content">
-            User: {{content.first_name}} {{content.last_name}}
-            <br>
-            ID: {{content.id}}
+            {% if content %}
+              User: {{content.first_name}} {{content.last_name}}
+              <br>
+              ID: {{content.id}}
+              <p>
+                <a href="{% url 'dc_parse:vk_disconnect' %}">Disconnect</a>
+              </p>
+            {% else %}
+              <p>
+                <a href="{% url 'dc_parse:vk_connect' %}">Connect</a>
+              </p>
+            {% endif %}
           </div>
         </div>
       </div>

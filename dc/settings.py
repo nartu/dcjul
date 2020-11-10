@@ -26,7 +26,7 @@ SECRET_KEY = '9po1krr0ta_ieozm9dq5t#hlx#@utlt^=+rd3)7z1hg&&#*_a-'
 DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','.ngrok.io']
-
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')   # Debug only
 
 # Application definition
 
@@ -129,5 +129,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = '/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    ('common', os.path.join(BASE_DIR, 'lib')),
+]
