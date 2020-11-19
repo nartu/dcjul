@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Get photo</title>
+  </head>
+  <body>
+    <div class="container" style="width: 90%">
+      <h2>Parse all photos</h2>
+      <h3>(no albums, no comment info)</h3>
+      <form method="POST" class="form">{% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Save</button>
+      </form>
+      <div class="debug">{{debug}}</div>
+    </div>
+  </body>
+</html>

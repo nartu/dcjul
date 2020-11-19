@@ -8,7 +8,16 @@ from django.contrib.sessions.models import Session
 from dc_main.models import Media, Tag, TagMediaBond
 from dc_parse.models import MediaVkPhoto, MediaVkPhotoThumbnail
 from django.db import IntegrityError
+from django.shortcuts import redirect
 
+def vk_admin_auth(user):
+    """ request.user - current user, login for admin"""
+    # if not user.is_authenticated:
+    #     # return redirect('%s?next=%s' % ('/admin/', request.path))
+    #     return redirect('/admin/')
+    # if not user.is_superuser:
+    #     return redirect('/')
+    return redirect('/')
 
 def vk_put_photos_to_db(json_answer,tags=''):
     """ put medias to db from json_answer,
@@ -59,8 +68,8 @@ def vk_put_photos_to_db(json_answer,tags=''):
                 album = img['album_id'],
                 owner = img['owner_id'],
                 post = img.get('post_id'),
-                comments = bool(img['comments']['count']),
-                tags = bool(img['tags']['count'])
+                comments = bool(img['comments']['count']) if 'comments' in img else False,
+                tags = bool(img['tags']['count']) if 'tags' in img else False
             )
             resume['vk_photo_info_add'] += 1
         # dc_parse.models.MediaVkPhotoThumbnail
