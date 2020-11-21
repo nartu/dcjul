@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    {% block title %}
+    {% endblock %}
+    <link rel="stylesheet" href="{% static 'gallery/css/dc_design.css' %}">
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        {% comment "Change language" %}
+        <div class="header__language">
+          <a href="">En</a>/Ru
+        </div>
+        {% endcomment %}
+        <nav class="header__menu">
+          <ul class="header__list">
+            <li class="header__link"><a href="#">Home</a></li>
+            <li class="header__link active"><a href="#">Gallery</a></li>
+            <li class="header__link"><a href="#">About</a></li>
+            <li class="header__link"><a href="#">Contact</a></li>
+          </ul>
+          <div class="header__burger">
+            <span></span>
+          </div>
+        </nav>
+      </header>
+
+      <main class="main">
+        {% block main_sector %}
+        {% endblock %}
+      </main>
+
+      <footer class="footer">
+        <div class="footer__copy">
+          @Julia Penumbra &#x3c;DarkCreator&#x3e;, 2020
+        </div>
+        <div class="footer__text">
+          All right reserved. For connect with author write <a href="mailto:darcreator@bk.ru?subject=feedback_darkcreator.ru">here</a>.
+        </div>
+      </footer>
+    </div>
+    <script src="{% static 'lib/npm/node_modules/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'gallery/js/header_menu.js' %}"></script>
+    {% block js %}
+    {% endblock %}
+  </body>
+</html>

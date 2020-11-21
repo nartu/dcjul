@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dc_main',
-    'dc_parse'
+    'dc_parse',
+    'dc_gallery'
 ]
 
 MIDDLEWARE = [
@@ -132,5 +133,5 @@ USE_TZ = True
 STATIC_URL = '/assets/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
-    ('common', os.path.join(BASE_DIR, 'lib')),
+    ('lib', os.path.join(BASE_DIR, 'lib')),
 ]

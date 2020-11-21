@@ -1,0 +1,45 @@
+{% extends 'dc_design_base.html' %}
+
+{% block title %}
+<title>DarkCreator Gallery</title>
+{% endblock %}
+
+{% block main_sector %}
+
+        <aside class="sidebar">
+          <ul class="sidebar__list">
+            {% for tag in tags %}
+            <li class="sidebar__link {% if tag.pk == tag_target.pk %}active{% endif %}">
+              <a href="{% url 'dc_gallery:gallery_tag' tag.pk %}">{{tag.name}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </aside>
+        <section class="content">
+          <section class="content__gallery gallery">
+            <div class="gallery__items">
+              {% for media in media_list %}
+              <div class="gallery__item">
+                <img src="{% firstof media.url_thumbnail media.url %}"
+                alt="{% firstof media.description_auto|truncatechars:100 media.type|add:' from '|add:media.source %}">
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+          <section class="content__page page">
+            <ul class="page__list">
+              <li class="page__link"><a href="">1</a></li>
+              <li class="page__link"><a href="">2</a></li>
+              <li class="page__link active"><a href="">3</a></li>
+              <li class="page__link passive">...</li>
+              <li class="page__link"><a href="">7</a></li>
+              <li class="page__link"><a href="">8</a></li>
+              <li class="page__link passive">...</li>
+              <li class="page__link"><a href="">14</a></li>
+              <li class="page__link"><a href="">15</a></li>
+              <li class="page__link"><a href="">16</a></li>
+            </ul>
+          </section>
+
+
+{% endblock %}

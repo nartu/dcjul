@@ -1,0 +1,69 @@
+@import "https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap";
+@import "default_view.css";
+@import "header-footer_gradient.css";
+/* sector main style */
+@import "dc_design_main-sector.css";
+@import "dc_design_header-sector.css";
+@import "dc_design_header-sector_burger.css";
+@import "dc_design_footer-sector.css";
+/* Debug */
+/* @import "structure_debug.css"; */
+
+
+/* Break points from bootstrap
+col-sm for larger mobile phones (devices with resolutions ≥ 576px);
+col-md for tablets (≥768px);
+col-lg for laptops (≥992px);
+col-xl for desktops (≥1200px) */
+
+/* my (≥890px); */
+
+/* background */
+
+body {
+  /* position: relative; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+
+/* Structure */
+
+.wrapper {
+  min-height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media (min-width: 769px) {
+  .wrapper {
+    grid-template-rows: minmax(70px,auto) 1fr minmax(70px,auto);
+  }
+  /* set height if position fixed */
+  .header, .footer {
+    min-height: 70px;
+  }
+}
+
+.wrapper::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: url('../img/IMG_1931.JPG') top right / cover no-repeat;
+  /* background-attachment: fixed; */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+.header, .footer {
+  grid-column-gap: 40px;
+}

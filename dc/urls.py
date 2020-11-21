@@ -19,5 +19,6 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('dc_main.urls')),
-    path('admin/parse/', include('dc_parse.urls',namespace='dc_parse'))
+    path('admin/parse/', include('dc_parse.urls',namespace='dc_parse')),
+    path('gallery/', include('dc_gallery.urls',namespace='dc_gallery')),
 ]

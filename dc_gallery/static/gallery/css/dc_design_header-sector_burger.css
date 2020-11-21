@@ -1,0 +1,135 @@
+@media (max-width: 768px) {
+	body.lock {
+		overflow: hidden;
+	}
+	.header__burger:before,
+	.header__burger:after {
+		content: "";
+		background-color: #fff;
+		position: absolute;
+		width: 100%;
+		left: 0;
+		height: 2px;
+		transition: all 0.3s;
+	}
+	.header__burger:before {
+		top: 0;
+	}
+	.header__burger:after {
+		bottom: 0;
+	}
+	.header__burger span {
+		background-color: #fff;
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 2px;
+		top: 7px;
+		transition: all 0.3s;
+	}
+	.header__burger {
+		width: 25px;
+		height: 16px;
+		text-align: center;
+		display: block;
+		position: relative;
+		z-index: 5;
+	}
+
+	.header__burger.active:before {
+		transform: rotate(45deg);
+		top: 7px;
+	}
+	.header__burger.active::after {
+		transform: rotate(-45deg);
+		bottom: 7px;
+	}
+	.header__burger.active span {
+		transform: scale(0);
+	}
+
+	.header__list {
+		/* display: grid;
+		grid-template: 60px repeat(4,20px) 1fr / 1fr; */
+		display: block;
+		justify-items: center;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: -100%;
+		left: 0;
+		background: rgba(0, 0, 0, 0.9);
+		padding: 50px 0px 0px 40px;
+		text-transform: uppercase;
+		transition: all 0.5s;
+		overflow: auto;
+    z-index: 1;
+	}
+	.header__list.active {
+		top: 0;
+	}
+
+  .header {
+    position: fixed;
+		z-index: 50;
+		top: 0;
+		left: 0;
+		width: 100%;
+  }
+  .header:after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+  }
+
+  .header__list {
+    /* background-color: green; */
+    background-image:
+    linear-gradient(45deg, transparent 47%, black 47% 55%, transparent 53%),
+    linear-gradient(135deg, transparent 47%, black 47% 53%, transparent 53%),
+    linear-gradient(0deg, transparent 45%, black 45% 55%, transparent 55%),
+    linear-gradient(90deg, transparent 45%, black 45% 55%, transparent 55%);
+    background-position: 0px 0px;
+    background-repeat: repeat;
+    background-size: 20px 20px;
+  }
+
+  .header__link {
+    line-height: 40px;
+  }
+
+  .header__language {
+    z-index: 5;
+  }
+
+	/*
+
+	.header__logo {
+	  height: 40px;
+	  width: 40px;
+		z-index: 5;
+	}
+	.header {
+		position: fixed;
+		z-index: 50;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+	.header:after {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: #6c7;
+		z-index: 4;
+	} */
+}
