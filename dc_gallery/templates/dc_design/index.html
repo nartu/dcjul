@@ -1,0 +1,24 @@
+{% extends 'dc_design/dc_design_base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Welcome to DarkCreator!</title>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'gallery/css/dc_design_index.css' %}">
+{% endblock %}
+
+
+{% block main_sector %}
+<div class="content">
+  <h2 class="welcome">Добро пожаловать на страницу <span>Юлии</span> aka <span>DarkCreator</span></h2>
+  <p class="case">Этот сайт создан для:</p>
+  <ul class="case_list">
+    <li><span>тех, кто хочет посмотреть мои фото, но не зарегистрирован в соцсетях</span></li>
+    <li class="black"><span>в помощь Большому брату</span></li>
+    <li><span>для самопрезентации</span></li>
+  </ul>
+  <p class="getstarted"><a href="{% url 'dc_gallery:gallery' %}">Начни просмотр!</a></p>
+</div>
+{% endblock %}

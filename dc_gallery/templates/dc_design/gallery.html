@@ -1,4 +1,4 @@
-{% extends 'dc_design_base.html' %}
+{% extends 'dc_design/dc_design_base.html' %}
 
 {% block title %}
 <title>DarkCreator Gallery</title>
@@ -26,6 +26,7 @@
               {% endfor %}
             </div>
           </section>
+          {% if media_list.paginator.num_pages > 1 %}
           <section class="content__page page">
             <ul class="page__list">
               <li class="page__link"><a href="">1</a></li>
@@ -40,6 +41,7 @@
               <li class="page__link"><a href="">16</a></li>
             </ul>
           </section>
+          {% endif %}
 
 
 {% endblock %}

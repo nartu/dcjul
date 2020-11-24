@@ -8,8 +8,9 @@
 .gallery__items {
   display: grid;
   gap: 15px;
-  /* grid-template-columns: repeat(auto-fit,minmax(200px,1fr)); */
-  grid-template-columns: repeat(auto-fit,200px);
+  grid-template-columns: repeat(auto-fit,minmax(200px,0.25fr));
+  /* grid-template-columns: repeat(auto-fit,200px); */
+  justify-content: center;
 }
 
 @media (max-width: 768px) {
@@ -42,7 +43,7 @@
 .gallery, .sidebar {
   padding: 14px;
   background-color: rgba(0, 0, 0, 0.3);
-  box-shadow: 0 0 35px 15px rgba(0, 0, 0, 0.4);;
+  box-shadow: 0 0 35px 15px rgba(0, 0, 0, 0.4);
 }
 
 .content {
