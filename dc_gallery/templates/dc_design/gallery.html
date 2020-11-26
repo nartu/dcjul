@@ -20,8 +20,17 @@
             <div class="gallery__items">
               {% for media in media_list %}
               <div class="gallery__item">
+                <a href="{{ media.url }}"
+                 class="fresco"
+                 data-fresco-caption="{{ media.description_auto }}"
+                 data-fresco-group="gallery"
+                 data-fresco-group-options="thumbnails: 'vertical', ui: 'inside', uiDelay: 1500, position: false">
                 <img src="{% firstof media.url_thumbnail media.url %}"
                 alt="{% firstof media.description_auto|truncatechars:100 media.type|add:' from '|add:media.source %}">
+                </a>
+                <div class="gallery__item_info">
+                  <a class="item__more" href="{% url 'dc_gallery:media_detail' media.pk %}">More</a>
+                </div>
               </div>
               {% endfor %}
             </div>

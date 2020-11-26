@@ -6,6 +6,7 @@
     {% block title %}
     {% endblock %}
     <link rel="stylesheet" href="{% static 'gallery/css/dc_design.css' %}">
+    <link rel="stylesheet" href="{% static 'lib/npm/node_modules/@staaky/fresco/dist/css/fresco.css' %}">
     {% block css %}
     {% endblock %}
     <meta name="viewport" content="width=device-width">
@@ -46,6 +47,7 @@
       </footer>
     </div>
     <script src="{% static 'lib/npm/node_modules/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'lib/npm/node_modules/@staaky/fresco/dist/js/fresco.min.js' %}"></script>
     <script src="{% static 'gallery/js/header_menu.js' %}"></script>
     {% block js %}
     {% endblock %}

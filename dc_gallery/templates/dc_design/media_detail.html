@@ -1,0 +1,45 @@
+{% extends 'dc_design/dc_design_base.html' %}
+{% load static %}
+
+{% block title %}
+<title>DarkCreator | Media details</title>
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'gallery/css/dc_design_page.css' %}">
+{% endblock %}
+
+
+{% block main_sector %}
+<div class="content">
+  <div class="content__media media">
+    {% if media.name %}<h2>{{media.name}}</h2>{% endif %}
+    <div class="image">
+      <a class="fresco"
+      data-fresco-group="image"
+      data-fresco-group-options="thumbnails: false, position: false, overflow: false"
+      href="{{media.url}}">
+        <img src="{% firstof media_thumbnail media.url %}" alt="{{media.name}}">
+      </a>
+      <!-- <a class="fresco"
+      data-fresco-group="image2"
+      data-fresco-group-options="thumbnails: false, position: true, overflow: true"
+      href="{{media.url}}">1
+      </a> -->
+    </div>
+  </div>
+  <div class="content__text text">
+    <p>Type: {{media.type}}</p>
+    <p>Source: {{media.source}}</p>
+    <p>Description in the source: {% firstof media.description_auto 'no discription' %}</p>
+    {% if media.description_auto %}
+    <p>Description in the in addition: {{media.description_auto}}</p>
+    {% endif %}
+    <p>Created on {{media.source}}: {{media.created_date}}</p>
+    <p>Added here: {{media.when_add_date}}</p>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+{% endblock %}

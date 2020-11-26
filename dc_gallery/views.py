@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from dc_main.models import Tag, Media, TagMediaBond
+from dc_parse.models import MediaVkPhotoThumbnail
 from django.core.paginator import Paginator
 
 # Static pages
@@ -42,3 +43,15 @@ def gallery_tag(request,tag_pk):
         'tag_target': tag_target,
         'media_list': media_list_page
     })
+
+def media_detail(request,media_pk):
+    """ Media detail by ID or message 'not exits' """
+    # media = Media.objects.filter(pk=pk)
+    media = get_object_or_404(Media,pk=media_pk)
+    if MediaVkPhotoThumbnail.objects.filter(media_id=media_pk):
+        media_thumbnail =  MediaVkPhotoThumbnail.objects.get(media_id=media_pk).x
+    else:
+        media_thumbnail =  None
+    return render(request,'dc_design/media_detail.html',{
+    'media_thumbnail': media_thumbnail,
+    'media': media})
