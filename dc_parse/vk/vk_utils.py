@@ -39,18 +39,26 @@ def vk_put_photos_to_db(json_answer,tags=''):
         # dc_main.models.Media
         img_url = vk_json_image_url(img,include_thumbnail=True)
         try:
-            media_new = Media.objects.create(
-                type = 'image',
-                source = 'vk',
-                url = img_url['src'],
-                url_thumbnail = img_url['thumbnail']['q'] if 'q' in img_url['thumbnail'] else '',
-                description_auto = img['text'],
-                created_date = vk_json_psql_time(img)
-            )
-            resume['media_new'] += 1
-        except IntegrityError:  # db error, exist url unique
-            media_new = Media.objects.get(url=img_url['src'])
-            resume['media_existed'] += 1
+            if Media.objects.filter(url=img_url['src']).exists():
+                media_new = Media.objects.get(url=img_url['src'])
+                resume['media_existed'] += 1
+            elif Media.objects.filter(url=img_url['src_old']).exists():
+                # old format uri without impf/ and ?..
+                media_new = Media.objects.get(url=img_url['src_old'])
+                resume['media_existed'] += 1
+            else:
+                media_new = Media.objects.create(
+                    type = 'image',
+                    source = 'vk',
+                    url = img_url['src'],
+                    url_thumbnail = img_url['thumbnail']['q'] if 'q' in img_url['thumbnail'] else '',
+                    description_auto = img['text'],
+                    created_date = vk_json_psql_time(img)
+                )
+                resume['media_new'] += 1
+        # except IntegrityError:  # db error, exist url unique
+        #     media_new = Media.objects.get(url=img_url['src'])
+        #     resume['media_existed'] += 1
         except Exception as e:
             raise e
         # dc_main.models.Tag TagMediaBond

@@ -8,6 +8,7 @@ from dc_parse.utils import put_tags_to_db
 from django.contrib.sessions.models import Session
 from dc_main.models import Media, Tag, TagMediaBond
 from dc_parse.models import MediaVkPhoto, MediaVkPhotoThumbnail
+from dc_parse.models import StatUploads
 from django.db import IntegrityError
 from dc_parse.vk.vk_utils import vk_put_photos_to_db
 from dc_parse.vk.vk_forms import ParseForm
@@ -37,6 +38,29 @@ def vk_get_photo_all(request):
         debug['result'] = tags
         content = vk_method(method_name,vk_token,parameters)
         resume = vk_put_photos_to_db(content,tags)
+
+        # Statistica
+
+        # resume = {  'media_new': 0,
+        #             'media_existed': 0,
+        #             'vk_photo_info_add': 0,
+        #             'vk_thumbnail_add': 0,
+        #             'tag_new': 0,
+        #             'tag_existed': 0,
+        #             'tag_bonds': 0
+        #             }
+        stat_action = {
+        'create_media': 'media_new',
+        'create_tags': 'tag_new',
+        'bind': 'tag_bonds'}
+        for act,act_res in stat_action.items():
+            if resume[act_res]>0:
+                StatUploads.objects.create(
+                    num = resume[act_res],
+                    action = act,
+                    method = 'album-all'
+                )
+        debug['resume'] = resume
     else:
         form = ParseForm(dict(count=12,offset=5))
     return render(request,'vk_get_photo_all.html',{
@@ -65,10 +89,10 @@ def vk_get_photo_album(request,album):
     method_name = 'photos.get'
     parameters = {
         'album_id': album,  # 199663597
-        'count': 4,
+        'count': 2,
         'photo_sizes': 1,
         'extended': 1,
-        'offset': 30,
+        'offset': 34,
         # 'photo_ids': 456239414
     }
     try:

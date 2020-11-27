@@ -52,7 +52,7 @@ def vk_method(method_name,access_token,parameters={},v='5.103'):
         content = 'error' + '\n' + rj['error']['error_msg']
     else:
         content = rj['response']
-    # write_json(rj,'ans4.json')
+    write_json(rj,'ans_photoalbum_1.json')
     return content
 
 def vk_json_image_url(image,include_src=True,include_thumbnail=True):
@@ -72,6 +72,7 @@ def vk_json_image_url(image,include_src=True,include_thumbnail=True):
                 src = image['sizes'][i]['url']
                 break
         result['src'] = src
+        result['src_old'] = build_uri(src).replace("impf/","")
     if(include_thumbnail):
         for t in thumbnail_mask:
             if t in sizes_of_image:

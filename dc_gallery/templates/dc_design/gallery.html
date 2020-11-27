@@ -16,6 +16,10 @@
           </ul>
         </aside>
         <section class="content">
+          <!-- <div class="content__info">Всего {{ num_of_media }} объектов.
+            {{ request.get_full_path }}
+            {{ request.path }}
+          </div> -->
           <section class="content__gallery gallery">
             <div class="gallery__items">
               {% for media in media_list %}
@@ -38,16 +42,13 @@
           {% if media_list.paginator.num_pages > 1 %}
           <section class="content__page page">
             <ul class="page__list">
-              <li class="page__link"><a href="">1</a></li>
-              <li class="page__link"><a href="">2</a></li>
-              <li class="page__link active"><a href="">3</a></li>
-              <li class="page__link passive">...</li>
-              <li class="page__link"><a href="">7</a></li>
-              <li class="page__link"><a href="">8</a></li>
-              <li class="page__link passive">...</li>
-              <li class="page__link"><a href="">14</a></li>
-              <li class="page__link"><a href="">15</a></li>
-              <li class="page__link"><a href="">16</a></li>
+              {% for page in media_list.paginator.page_range %}
+                {% if page == media_list.number %}
+                <li class="page__link active"><a href="{{request.path}}?page={{page}}">{{page}}</a></li>
+                {% else %}
+                <li class="page__link"><a href="{{request.path}}?page={{page}}">{{page}}</a></li>
+                {% endif %}
+              {% endfor %}
             </ul>
           </section>
           {% endif %}

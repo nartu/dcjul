@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from dc_main.models import Tag, Media, TagMediaBond
 from dc_parse.models import MediaVkPhotoThumbnail
 from django.core.paginator import Paginator
+from django.db import IntegrityError
 
 # Static pages
 
@@ -33,15 +34,21 @@ def gallery_tag(request,tag_pk):
     media_list = list()
     media_ids = TagMediaBond.objects.filter(tag_id=tag_target.pk)
     for media in media_ids:
-        media_list += Media.objects.filter(pk=media.pk)
+        try:
+            media_list += [Media.objects.get(pk=media.media_id)]
+        except Media.DoesNotExist:
+            media_list += Media.objects.filter(pk=4)
     # pages, objects per page
-    media_paginator = Paginator(media_list,4)
+    media_paginator = Paginator(media_list,16)
     page = request.GET.get('page')
     media_list_page = media_paginator.get_page(page)
+    # for p in range(media_paginator.num_pages):
+
     return render(request,'dc_design/gallery.html',{
         'tags': tags,
         'tag_target': tag_target,
-        'media_list': media_list_page
+        'media_list': media_list_page,
+        'num_of_media': len(media_ids)
     })
 
 def media_detail(request,media_pk):

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 # from dc_main.models import Media
 
 class MediaVkPhoto(models.Model):
@@ -26,3 +27,17 @@ class MediaVkPhotoThumbnail(models.Model):
     s = models.URLField(max_length=255)
     m = models.URLField(max_length=255, blank=True)
     x = models.URLField(max_length=255, blank=True)
+
+class StatUploads(models.Model):
+    """
+    Statistica of uploads in bd
+    Time (when upload)
+    Num (photos per action)
+    Action (add, edit, delete, update [media/tags], bind [media to tag])
+    Method (page: all, album-N, album-all)
+    """
+    time = models.DateTimeField(
+            default=timezone.now)
+    num = models.IntegerField()
+    action = models.CharField(max_length=20)
+    method = models.CharField(max_length=20)
