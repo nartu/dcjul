@@ -21,10 +21,10 @@
         {% endcomment %}
         <nav class="header__menu">
           <ul class="header__list">
-            <li class="header__link"><a href="#">Home</a></li>
-            <li class="header__link active"><a href="#">Gallery</a></li>
-            <li class="header__link"><a href="#">About</a></li>
-            <li class="header__link"><a href="#">Contact</a></li>
+            <li class="header__link"><a href="{% url 'dc_gallery:index' %}">Home</a></li>
+            <li class="header__link"><a href="{% url 'dc_gallery:gallery' %}">Gallery</a></li>
+            <li class="header__link"><a href="{% url 'dc_gallery:about' %}">About</a></li>
+            <!-- <li class="header__link"><a href="{% url 'dc_gallery:contact' %}">Contact</a></li> -->
           </ul>
           <div class="header__burger">
             <span></span>
@@ -49,6 +49,16 @@
     <script src="{% static 'lib/npm/node_modules/jquery/dist/jquery.js' %}"></script>
     <script src="{% static 'lib/npm/node_modules/@staaky/fresco/dist/js/fresco.min.js' %}"></script>
     <script src="{% static 'gallery/js/header_menu.js' %}"></script>
+    <script>
+    $('document').ready(function(){
+      function headerMenuActive(name) {
+          $(`.header__link:has([href$="${name}"])`).addClass('active');
+          console.log(name)
+      }
+      // headerMenuActive('{{request.path}}');
+      headerMenuActive('{{page_id}}');
+    });
+    </script>
     {% block js %}
     {% endblock %}
   </body>

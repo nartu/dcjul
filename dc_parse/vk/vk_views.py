@@ -14,6 +14,8 @@ from dc_parse.vk.vk_utils import vk_put_photos_to_db
 from dc_parse.vk.vk_forms import ParseForm
 
 def vk_get_photo_all(request):
+    if not request.user.is_superuser:
+        return redirect('%s?next=%s' % (reverse('dc_parse:admin_auth'), request.path))
     debug = {}
     if request.method == "POST":
         post = request.POST.copy()
@@ -85,6 +87,8 @@ def vk_get_photo_all(request):
 
 
 def vk_get_photo_album(request,album):
+    if not request.user.is_superuser:
+        return redirect('%s?next=%s' % (reverse('dc_parse:admin_auth'), request.path))
     vk_token,vk_user = get_vk_cookies(request)
     method_name = 'photos.get'
     parameters = {

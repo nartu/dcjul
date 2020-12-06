@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from .secret import psql, dsk
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -19,11 +20,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9po1krr0ta_ieozm9dq5t#hlx#@utlt^=+rd3)7z1hg&&#*_a-'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = dsk(DEBUG)
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','.ngrok.io']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')   # Debug only
@@ -82,15 +85,20 @@ WSGI_APPLICATION = 'dc.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'dcjul.db.sqlite3'),
 #     }
 # }
-
+psql = psql(DEBUG)
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    'NAME': 'dcjul',
-    'USER': 'dcjul',
-    'PASSWORD': 'abcdea',
-    'HOST': 'localhost',
-    'PORT': '',
+    # 'NAME': 'dcjul',
+    # 'USER': 'dcjul',
+    # 'PASSWORD': 'abcdea',
+    # 'HOST': 'localhost',
+    # 'PORT': '',
+    'NAME': psql['name'],
+    'USER': psql['user'],
+    'PASSWORD': psql['password'],
+    'HOST': psql['host'],
+    'PORT': psql['port'],
  }
 }
 

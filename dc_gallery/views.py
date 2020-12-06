@@ -8,10 +8,12 @@ from django.db import IntegrityError
 
 def index(request):
     return render(request,'dc_design/index.html',{
+        'page_id': 'index'
         })
 
 def about(request):
     return render(request,'dc_design/about.html',{
+        'page_id': 'about'
         })
 
 def contact(request):
@@ -48,7 +50,8 @@ def gallery_tag(request,tag_pk):
         'tags': tags,
         'tag_target': tag_target,
         'media_list': media_list_page,
-        'num_of_media': len(media_ids)
+        'num_of_media': len(media_ids),
+        'page_id': 'gallery/'
     })
 
 def media_detail(request,media_pk):
@@ -60,5 +63,7 @@ def media_detail(request,media_pk):
     else:
         media_thumbnail =  None
     return render(request,'dc_design/media_detail.html',{
-    'media_thumbnail': media_thumbnail,
-    'media': media})
+        'media_thumbnail': media_thumbnail,
+        'media': media,
+        'page_id': 'gallery'
+    })
