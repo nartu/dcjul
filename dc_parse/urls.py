@@ -14,7 +14,9 @@ urlpatterns = [
     path('vk/connect/test/', vk_connect.vk_connect_test, name='vk_connect_test'),
     path('vk/disconnect/', vk_connect.vk_disconnect, name='vk_disconnect'),
     # Parse for db
+    path('vk/get/album/list', vk_views.vk_get_album_list, name='vk_get_album_list'),
     path('vk/get/photo/album-<album>/', vk_views.vk_get_photo_album, name='vk_get_photo_album'),
+    path('vk/get/photo/fast/album-<album>/', vk_views.vk_get_photo_album_fast, name='vk_get_photo_album_fast'),
     path('vk/get/photo/all/', vk_views.vk_get_photo_all, name='vk_get_photo_all'),
     # Utils function (help)
     path('vk/utils/photoinfo', vk_subviews.vk_utils_photo_info, name='vk_utils_photo_info')

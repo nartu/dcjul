@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dc_main',
     'dc_parse',
-    'dc_gallery'
+    'dc_gallery',
+    'user_visit',
+    'EasyVisitors'
 ]
 
 MIDDLEWARE = [
@@ -53,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user_visit.middleware.UserVisitMiddleware',
+    'EasyVisitors.middleware.VisitorCounterMiddleware'
 ]
 
 ROOT_URLCONF = 'dc.urls'

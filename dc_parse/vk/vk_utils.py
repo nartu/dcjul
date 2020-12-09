@@ -42,6 +42,11 @@ def vk_put_photos_to_db(json_answer,tags=''):
             if Media.objects.filter(url=img_url['src']).exists():
                 media_new = Media.objects.get(url=img_url['src'])
                 resume['media_existed'] += 1
+            elif MediaVkPhoto.objects.filter(photo=img['id']).exists():
+                # this image was uploaded but had other uri
+                media_id = MediaVkPhoto.objects.get(photo=img['id']).media_id
+                media_new = Media.objects.get(pk=media_id)
+                resume['media_existed'] += 1
             elif Media.objects.filter(url=img_url['src_old']).exists():
                 # old format uri without impf/ and ?..
                 media_new = Media.objects.get(url=img_url['src_old'])

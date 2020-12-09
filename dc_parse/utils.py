@@ -52,7 +52,7 @@ def vk_method(method_name,access_token,parameters={},v='5.103'):
         content = 'error' + '\n' + rj['error']['error_msg']
     else:
         content = rj['response']
-    write_json(rj,'ans_photoalbum_1.json')
+    write_json(rj,'ans_albumlist.json')
     return content
 
 def vk_json_image_url(image,include_src=True,include_thumbnail=True):
@@ -71,7 +71,7 @@ def vk_json_image_url(image,include_src=True,include_thumbnail=True):
                 i = sizes_of_image.index(t)
                 src = image['sizes'][i]['url']
                 break
-        result['src'] = src
+        result['src'] = src.replace("&type=album","")
         result['src_old'] = build_uri(src).replace("impf/","")
     if(include_thumbnail):
         for t in thumbnail_mask:
@@ -85,6 +85,10 @@ def vk_json_psql_time(image):
 # from unix to postgres standart timestamp
 # image the same in vk_json_image_url
     date = datetime.datetime.fromtimestamp(image['date'])
+    return date
+
+def psql_time(unix_timestamp):
+    date = datetime.datetime.fromtimestamp(unix_timestamp)
     return date
 
 def put_tags_to_db(tags, media):
@@ -115,5 +119,19 @@ def put_tags_to_db(tags, media):
             resume['tag_bonds'] += 1
         except IntegrityError:  # if in db already (import django.db)
             pass
-
     return resume
+
+def prepare_tags(tags_existed=[],tags_new_str=''):
+    """
+    tags_existed - array (from form, post.getlist('tags_existed'))
+    tags_new - string as 'tag1, tag 2' (from form, post.get('tags_new'))
+    return array tags names
+    """
+    tags = []
+    tags_new = list(filter(lambda x: len(x)>0, list(map(str.strip,tags_new_str.split(',')))))
+    for tag_pk in tags_existed:
+        tags += [Tag.objects.get(pk=int(tag_pk)).name]
+    for tag_name in tags_new:
+        if tag_name not in tags:
+            tags += [tag_name]
+    return tags

@@ -2,7 +2,7 @@ from django import forms
 from dc_main.models import Tag
 
 class ParseForm(forms.Form):
-    count = forms.IntegerField(required=False,min_value=1)
+    count = forms.IntegerField(required=False,min_value=0)
     offset = forms.IntegerField(required=False,min_value=0)
     tags_new = forms.CharField(widget=forms.Textarea({'rows': 2}),required=False)
 
