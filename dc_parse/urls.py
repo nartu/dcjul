@@ -1,6 +1,7 @@
 from django.urls import path
 from .vk import vk_views, vk_subviews
 from .views_connect import vk_connect
+from .edit import views as edit_views
 
 app_name = 'dc_parse'
 urlpatterns = [
@@ -19,5 +20,8 @@ urlpatterns = [
     path('vk/get/photo/fast/album-<album>/', vk_views.vk_get_photo_album_fast, name='vk_get_photo_album_fast'),
     path('vk/get/photo/all/', vk_views.vk_get_photo_all, name='vk_get_photo_all'),
     # Utils function (help)
-    path('vk/utils/photoinfo', vk_subviews.vk_utils_photo_info, name='vk_utils_photo_info')
+    path('vk/utils/photoinfo', vk_subviews.vk_utils_photo_info, name='vk_utils_photo_info'),
+    # Edit existed models
+    path('edit/test', edit_views.test, name='edit_test'),
+    path('edit/media/<int:media_pk>', edit_views.edit_media, name='edit_media'),
 ]

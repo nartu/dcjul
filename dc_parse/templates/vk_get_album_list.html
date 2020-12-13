@@ -52,6 +52,10 @@
             <p class="item__title">
               <a href="{% url 'dc_parse:vk_get_photo_album' album.id %}">{{album.title}}</a>
               <span> ({{ album.size }})</span>
+              {% if album.id == -9000 %}
+              <br />
+              <span style="color:red">Will be Error. Need addition token.</span>
+              {% endif %}
             </p>
             <div class="item__create">Created: {{ album.created }}</div>
             <div class="item__update">Last update: {{ album.updated }}</div>

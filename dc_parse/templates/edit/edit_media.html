@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Edit media {{media.pk}} form</title>
+    <style media="all">
+      body {
+        display: grid;
+      }
+      .container {
+        width: 100%;
+        padding: 20px;
+        justify-self: center;
+      }
+      ul#id_tags_existed {
+        display: grid;
+        grid-template-columns: repeat(auto-fit,250px);
+        grid-template-rows: repeat(auto-fit,30px);
+      }
+
+      #id_description_auto, #id_description_me {
+        width: 100%;
+      }
+
+      .image img {
+        max-height: 500px;
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" style="width: 90%">
+      <h3>Edit media {{media.pk}}</h3>
+      <div class="image">
+        <a class="fresco"
+        data-fresco-group="image"
+        data-fresco-group-options="thumbnails: false, position: false, overflow: false"
+        href="{{media.url}}">
+          <img src="{% firstof media.url_thumbnail media.url %}" alt="{{media.name}}">
+        </a>
+      </div>
+      <form method="POST" class="form">{% csrf_token %}
+          {{ form.as_p }}
+          <button type="submit">Save</button>
+      </form>
+      <div class="debug">{{debug}}</div>
+    </div>
+  </body>
+</html>
