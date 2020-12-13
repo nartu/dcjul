@@ -87,6 +87,10 @@
     z-index: 4;
   }
 
+	.header {
+		background-color: transparent;
+	}
+
   .header__list {
     /* background-color: green; */
     background-image:

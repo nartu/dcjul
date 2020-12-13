@@ -4,6 +4,10 @@
   align-items: center;
 }
 
+.content {
+  padding: 0 20px;
+}
+
 .welcome {
   font-size: 26px;
   text-align: right;

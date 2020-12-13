@@ -1,13 +1,9 @@
 from django.urls import path
-from . import views, views_test
+from dc_gallery import views as views_gallery
 
+app_name = 'dc_main'
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('tags', views.tags, name='tags'),
-    path('tag/list', views.tag_list, name='tag_list'),
-    path('tag/<int:pk>/detail', views.tag_detail, name='tag_detail'),
-    path('media/<int:pk>', views.media_detail, name='media_detail'),
-    path('media/list', views.media_list, name='media_list'),
-    path('tag/<int:pk>', views.tag_link, name='tag_link'),
-    path('test', views_test.test, name='test'),
+    path('', views_gallery.index, name='index'),
+    path('about', views_gallery.about, name='about'),
+    path('contact', views_gallery.contact, name='contact'),
 ]

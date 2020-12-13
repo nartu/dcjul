@@ -51,7 +51,7 @@ def gallery_tag(request,tag_pk):
         'tag_target': tag_target,
         'media_list': media_list_page,
         'num_of_media': len(media_ids),
-        'page_id': 'gallery/'
+        'page_id': 'gallery'
     })
 
 def media_detail(request,media_pk):

@@ -29,9 +29,9 @@
         {% endcomment %}
         <nav class="header__menu">
           <ul class="header__list">
-            <li class="header__link"><a href="{% url 'dc_gallery:index' %}">Home</a></li>
+            <li class="header__link"><a href="{% url 'dc_main:index' %}">Home</a></li>
             <li class="header__link"><a href="{% url 'dc_gallery:gallery' %}">Gallery</a></li>
-            <li class="header__link"><a href="{% url 'dc_gallery:about' %}">About</a></li>
+            <li class="header__link"><a href="{% url 'dc_main:about' %}">About</a></li>
             <!-- <li class="header__link"><a href="{% url 'dc_gallery:contact' %}">Contact</a></li> -->
           </ul>
           <div class="header__burger">
@@ -60,7 +60,10 @@
     <script>
     $('document').ready(function(){
       function headerMenuActive(name) {
-          $(`.header__link:has([href$="${name}"])`).addClass('active');
+          if (name == 'index')
+            $(`.header__link:first`).addClass('active');
+          else
+            $(`.header__link:has([href*="${name}"])`).addClass('active');
           console.log(name)
       }
       // headerMenuActive('{{request.path}}');
