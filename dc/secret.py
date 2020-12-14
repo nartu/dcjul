@@ -1,7 +1,7 @@
 import os
 
-def secret_file(debug=False,filename='shadow.dc.txt',secret_dir='atejas'):
-    if debug==True:
+def secret_file(in_production=False,filename='shadow.dc.txt',secret_dir='atejas'):
+    if in_production==False:
         # dev
         base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     else:
@@ -9,9 +9,10 @@ def secret_file(debug=False,filename='shadow.dc.txt',secret_dir='atejas'):
         base = os.path.join('/','home','darkcreator')
     return os.path.join(base,secret_dir,filename)
 
-def psql(debug):
+def psql(in_production,db='psql'):
     # psql params from secret file
-    file = secret_file(debug)
+    # db = psql or mysql
+    file = secret_file(in_production)
     with open(file,'r') as f:
         for row in f:
             if (row!='\n') and ('#' not in row[0:2]):
@@ -19,7 +20,7 @@ def psql(debug):
                 ar = row.strip().split(':')
                 r = {}
                 # print(ar)
-                if 'psql' in ar[0]:
+                if db in ar[0]:
                     r['name'] = ar[1]
                     r['user'] = ar[2]
                     r['password'] = ar[3]
@@ -28,9 +29,9 @@ def psql(debug):
                     return r
         return False
 
-def dsk(debug):
+def dsk(in_production):
     # django secret key from secret file
-    file = secret_file(debug)
+    file = secret_file(in_production)
     with open(file,'r') as f:
         for row in f:
             if (row!='\n') and ('#' not in row[0:2]):
@@ -42,9 +43,9 @@ def dsk(debug):
                     return ar[1]
         return False
 
-def get_vk_token(debug):
+def get_vk_token(in_production):
     # django secret key from secret file
-    file = secret_file(debug)
+    file = secret_file(in_production)
     with open(file,'r') as f:
         for row in f:
             if (row!='\n') and ('#' not in row[0:2]):
@@ -55,3 +56,5 @@ def get_vk_token(debug):
         return False
 
 # print(vk_token(True))
+# print(get_vk_token(False))
+print(psql(False,'mysql'))

@@ -95,10 +95,16 @@ def put_tags_to_db(tags, media):
     """ tags - array, media - dc_main.models.Media,
         to dc_main.models.Tag, TagMediaBond,
         return resume """
+    bonds_old = list(TagMediaBond.objects.filter(media=media)).copy()
+    bonds_old_persist = []
     resume = {
             'tag_new': 0,
             'tag_existed': 0,
-            'tag_bonds': 0
+            'tag_bonds': 0,
+            'tag_bonds_del': 0,
+            'tag_bonds_new_ar': [],
+            'tag_bonds_ex_ar': [],
+            'tag_bonds_del_ar': [],
             }
     for tag in tags:
         try:
@@ -111,14 +117,24 @@ def put_tags_to_db(tags, media):
         #     raise NameError
         except Exception as e:
             raise e
+        # Add
         try:
-            TagMediaBond.objects.create(
+            tmb_new = TagMediaBond.objects.create(
                 media = media,
                 tag = tag_obj
             )
             resume['tag_bonds'] += 1
+            resume['tag_bonds_new_ar'] += [tmb_new.pk]
         except IntegrityError:  # if in db already (import django.db)
-            pass
+            tmb_ex = TagMediaBond.objects.get(media=media,tag=tag_obj)
+            bonds_old_persist += [tmb_ex]
+            resume['tag_bonds_ex_ar'] += [tmb_ex.pk]
+    # Delete
+    bonds_old_del = list(set(bonds_old)-set(bonds_old_persist))
+    for bond in bonds_old_del:
+        bond.delete()
+        resume['tag_bonds_del_ar'] += [bond.pk]
+        resume['tag_bonds_del'] += 1
     return resume
 
 def prepare_tags(tags_existed=[],tags_new_str=''):

@@ -20,13 +20,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
+# Custom setting var (by Julia)
+# on the production host, but DEBUG can be True (if it need)
+IN_PRODUCTION = False
 
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = dsk(IN_PRODUCTION)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = dsk(DEBUG)
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','.ngrok.io']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')   # Debug only
@@ -89,22 +91,44 @@ WSGI_APPLICATION = 'dc.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'dcjul.db.sqlite3'),
 #     }
 # }
-psql = psql(DEBUG)
-DATABASES = {
+if IN_PRODUCTION:
+    mysql = psql(IN_PRODUCTION,'mysql')
+    DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    # 'NAME': 'dcjul',
-    # 'USER': 'dcjul',
-    # 'PASSWORD': 'abcdea',
-    # 'HOST': 'localhost',
-    # 'PORT': '',
-    'NAME': psql['name'],
-    'USER': psql['user'],
-    'PASSWORD': psql['password'],
-    'HOST': psql['host'],
-    'PORT': psql['port'],
- }
-}
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': mysql['name'],
+        'USER': mysql['user'],
+        'PASSWORD': mysql['password'],
+        'HOST': mysql['host'],
+        'PORT': mysql['port'],
+        # 'OPTIONS': {
+        #     'read_default_file': '/path/to/my.cnf',
+        #     },
+        }
+    }
+    # DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'dcjul_a.db.sqlite3'),
+    #     }
+    # }
+else:
+    psql = psql(IN_PRODUCTION)
+    DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': 'dcjul',
+        # 'USER': 'dcjul',
+        # 'PASSWORD': 'abcdea',
+        # 'HOST': 'localhost',
+        # 'PORT': '',
+        'NAME': psql['name'],
+        'USER': psql['user'],
+        'PASSWORD': psql['password'],
+        'HOST': psql['host'],
+        'PORT': psql['port'],
+     }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
