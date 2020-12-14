@@ -7,7 +7,7 @@ from dc_parse.vk.vk_utils import vk_admin_auth
 from django.contrib.sessions.models import Session
 from django.contrib.auth.decorators import login_required, permission_required
 from django.urls import reverse
-from dc.settings import DEBUG
+from dc.settings import IN_PRODUCTION
 from dc.secret import get_vk_token
 
 def admin_auth(request):
@@ -30,7 +30,7 @@ def vk_connect(request):
     if code:    # second step auth
         url_data = {
         'client_id': 3410588,
-        'client_secret': get_vk_token(DEBUG),
+        'client_secret': get_vk_token(IN_PRODUCTION),
         'redirect_uri': build_uri(this_uri),
         'code': code}
         # url = build_uri('https://oauth.vk.com/access_token',url_query=url_data)
@@ -39,7 +39,7 @@ def vk_connect(request):
         rj = response.json()
         write_json(response.json(),'auth10.json')
         if rj.get('error'):
-            return render(request,'vk_connect_test.html',{
+            return render(request,'connect/vk_connect_test.html',{
             'step': 2,
             'status': 'fail',
             'error': rj['error'],
