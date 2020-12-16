@@ -2,18 +2,21 @@ import os
 import requests
 import json
 from urllib.parse import urlencode, urlparse
-from dc.settings import BASE_DIR
+from dc.settings import BASE_DIR, IN_PRODUCTION
 from django.contrib.sessions.models import Session
 import datetime
 from dc_main.models import Media, Tag, TagMediaBond
 from django.db import IntegrityError
 
 def write_json(data='',filename='answer.json'):
-    save_dir = os.path.join(BASE_DIR,'dc_parse','debug','json')
-    filename = os.path.join(save_dir,filename)
-    with open(filename, 'w') as file:
-        #write to file
-        json.dump(data, file, indent=2,ensure_ascii=False)
+    if IN_PRODUCTION:
+        pass
+    else:
+        save_dir = os.path.join(BASE_DIR,'dc_parse','debug','json')
+        filename = os.path.join(save_dir,filename)
+        with open(filename, 'w') as file:
+            #write to file
+            json.dump(data, file, indent=2,ensure_ascii=False)
 
 def build_uri(url_src,url_query={}):
     url = urlparse(url_src)

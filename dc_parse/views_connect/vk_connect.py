@@ -37,7 +37,8 @@ def vk_connect(request):
         # response = requests.get(url)
         response = requests.post('https://oauth.vk.com/access_token',data=url_data)
         rj = response.json()
-        write_json(response.json(),'auth10.json')
+        # write_json(response.json(),'auth10.json')
+        # FIX function for work IN_PRODUCTION=False only
         if rj.get('error'):
             return render(request,'connect/vk_connect_test.html',{
             'step': 2,

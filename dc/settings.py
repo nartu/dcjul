@@ -30,7 +30,7 @@ SECRET_KEY = dsk(IN_PRODUCTION)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com','.ngrok.io', 'www.darkcreator.ru']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')   # Debug only
 
 # Application definition
