@@ -14,6 +14,9 @@ class EditMediaForm(forms.Form):
 
     description_me = forms.CharField(widget=forms.Textarea({'rows': 4}),required=False)
 
+    redirect_next = forms.BooleanField(required=False)
+    redirect_media_info  = forms.BooleanField(required=False)
+
     def __init__(self, *args, **kwargs):
         super(EditMediaForm, self).__init__(*args, **kwargs)
 

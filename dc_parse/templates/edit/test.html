@@ -10,9 +10,13 @@
       <form method="POST" class="form">{% csrf_token %}
           {{ form.as_p }}
           {# form_media.as_p #}
-          <button type="submit">Save</button>
+          <button type="submit" id="b1" class="b1c">Save</button>
+          <button type="submit" id="b2" class="b2c">Save 2</button>
       </form>
       <div class="debug">{{debug}}</div>
+      <div style="width=100%">
+        <pre>{{request.body}}</pre>
+      </div>
     </div>
   </body>
 </html>

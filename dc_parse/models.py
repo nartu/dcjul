@@ -28,16 +28,20 @@ class MediaVkPhotoThumbnail(models.Model):
     m = models.URLField(max_length=255, blank=True)
     x = models.URLField(max_length=255, blank=True)
 
-class StatUploads(models.Model):
+class StatUpload(models.Model):
     """
     Statistica of uploads in bd
     Time (when upload)
     Num (photos per action)
-    Action (add, edit, delete, update [media/tags], bind [media to tag])
-    Method (page: all, album-N, album-all)
+    Action (add, edit, delete, update [media/tags], bind [media to tag], bind_delete)
+    Method (page: all, album-N, album-all, edit-media)
     """
     time = models.DateTimeField(
             default=timezone.now)
     num = models.IntegerField()
     action = models.CharField(max_length=20)
     method = models.CharField(max_length=20)
+    media = models.ForeignKey('dc_main.Media',on_delete=models.CASCADE,blank=True,null=True)
+
+    def __str__(self):
+        return f"{self.num} {self.action} in Media_{self.media.id} by {self.method}"

@@ -32,11 +32,21 @@
     <p>Type: {{media.type}}</p>
     <p>Source: {{media.source}}</p>
     <p>Description in the source: {% firstof media.description_auto 'no discription' %}</p>
-    {% if media.description_auto %}
-    <p>Description in the in addition: {{media.description_auto}}</p>
+    {% if media.description_me %}
+    <p>Description in the in addition: {{media.description_me}}</p>
     {% endif %}
     <p>Created on {{media.source}}: {{media.created_date}}</p>
     <p>Added here: {{media.when_add_date}}</p>
+    <p>
+    Tags:
+    {% for tag in tags %}
+      <a href="{% url 'dc_gallery:gallery_tag' tag_pk=tag.pk %}">
+      {{tag.name}}{% if tag is not tags|last %}, {% endif %}
+      </a>
+    {% empty %}
+      none
+    {% endfor %}
+    </p>
   </div>
 </div>
 {% endblock %}

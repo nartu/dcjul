@@ -47,11 +47,13 @@
 }
 
 .text a {
-  color: #dcd934;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 .text a:hover {
   text-shadow: 0 0 15px rgba(220, 217, 52, 0.3);
+  /* color: #dcd934; */
 }
 
 .text h2 {
@@ -70,7 +72,8 @@
 
 @media (min-width: 579px) {
   .image img {
-    width: 550px;
+    max-width: 550px;
+    max-height: 400px;
   }
 }
 

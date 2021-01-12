@@ -57,4 +57,4 @@ def get_vk_token(in_production):
 
 # print(vk_token(True))
 # print(get_vk_token(False))
-print(psql(False,'mysql'))
+# print(psql(False,'mysql'))

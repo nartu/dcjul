@@ -7,6 +7,7 @@ class TestForm(forms.Form):
     test_checkboxes = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple(),
         choices=d,required=False)
     description_add = forms.CharField(widget=forms.Textarea({'rows': 4}),required=False)
+    bool = forms.BooleanField(required=False)
 
 class MediaTestForm(forms.ModelForm):
     class Meta:

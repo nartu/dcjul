@@ -62,8 +62,14 @@ def media_detail(request,media_pk):
         media_thumbnail =  MediaVkPhotoThumbnail.objects.get(media_id=media_pk).x
     else:
         media_thumbnail =  None
+    # array of tags instances of media
+    tags = []
+    tags_of_media = TagMediaBond.objects.filter(media=media_pk)
+    for tmb in tags_of_media:
+        tags += [tmb.tag]
     return render(request,'dc_design/media_detail.html',{
         'media_thumbnail': media_thumbnail,
         'media': media,
-        'page_id': 'gallery'
+        'page_id': 'gallery',
+        'tags': tags
     })

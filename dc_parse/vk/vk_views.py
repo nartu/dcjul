@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import os
 import requests
+from django.urls import reverse
 from dc_parse.utils import write_json, build_uri, psql_time
 from dc_parse.utils import get_vk_cookies, vk_method
 from dc_parse.utils import vk_json_image_url, vk_json_psql_time
@@ -8,10 +9,11 @@ from dc_parse.utils import put_tags_to_db, prepare_tags
 from django.contrib.sessions.models import Session
 from dc_main.models import Media, Tag, TagMediaBond
 from dc_parse.models import MediaVkPhoto, MediaVkPhotoThumbnail
-from dc_parse.models import StatUploads
+from dc_parse.models import StatUpload
 from django.db import IntegrityError
 from dc_parse.vk.vk_utils import vk_put_photos_to_db
 from dc_parse.vk.vk_forms import ParseForm
+from django.urls import reverse
 
 def vk_get_photo_all(request):
     # (no albums, no comment info)
@@ -58,7 +60,7 @@ def vk_get_photo_all(request):
         'bind': 'tag_bonds'}
         for act,act_res in stat_action.items():
             if resume[act_res]>0:
-                StatUploads.objects.create(
+                StatUpload.objects.create(
                     num = resume[act_res],
                     action = act,
                     method = 'album-all'
@@ -129,7 +131,7 @@ def vk_get_photo_album(request,album):
         # 'bind': 'tag_bonds'}
         # for act,act_res in stat_action.items():
         #     if resume[act_res]>0:
-        #         StatUploads.objects.create(
+        #         StatUpload.objects.create(
         #             num = resume[act_res],
         #             action = act,
         #             method = 'album-'+album
