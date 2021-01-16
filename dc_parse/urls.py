@@ -2,6 +2,7 @@ from django.urls import path
 from .vk import vk_views, vk_subviews
 from .views_connect import vk_connect
 from .edit import views as edit_views
+from . import views as common_views
 
 app_name = 'dc_parse'
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     # Links
     path('edit/media/list/ava', edit_views.edit_media_list_ava, name='edit_media_list_ava'),
     path('edit/media/list/table', edit_views.edit_media_list_table, name='edit_media_list_table'),
+    path('', common_views.link_all, name='link_all')
 ]

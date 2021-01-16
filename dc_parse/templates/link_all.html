@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Admin links</title>
+  </head>
+  <body>
+    <h2>{{user.username|upper}}</h2>
+    <div class="links">
+      <p>VK API</p>
+      <a href="{% url 'dc_parse:vk_connect_test' %}">VK connect test</a>
+      <p>VK parse</p>
+      <a href="{% url 'dc_parse:vk_get_album_list' %}">All albums</a><br>
+      <a href="{% url 'dc_parse:vk_get_photo_all' %}">Put all photos (without details)</a>
+      <p>VK utils</p>
+      <a href="{% url 'dc_parse:vk_utils_photo_info' %}">All avatars sizes</a>
+      <p>Edit media</p>
+      <a href="{% url 'dc_parse:edit_media_list_ava' %}">All media: avatar view</a><br>
+      <a href="{% url 'dc_parse:edit_media_list_table' %}">All media: table view (details)</a>
+    </div>
+  </body>
+</html>

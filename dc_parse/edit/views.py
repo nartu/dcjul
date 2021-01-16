@@ -16,6 +16,7 @@ from django.db.models import Expression
 from django.core.paginator import Paginator
 from dc_parse.models import MediaVkPhotoThumbnail
 from datetime import datetime,timedelta
+import re
 
 
 def test(request):
@@ -46,10 +47,14 @@ def edit_media(request,media_pk):
 
     media_pk_next = Media.objects.filter(when_add_date__gt=media.when_add_date).aggregate(Min('pk'))['pk__min']
 
+    tags_new_ar = re.findall('#([^\s]+)',media.description_auto)
+    tags_new = ", ".join(w for w in tags_new_ar)
+
     form_populate = {
         'description_me':media.description_me,
         'description_auto':media.description_auto,
         'tags_existed':tags_existed,
+        'tags_new': tags_new,
         'redirect_next':True
         }
 
