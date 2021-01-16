@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>List of medias for Edit | Avatar view</title>
+    <link rel="stylesheet" href="{% static 'parse/css/edit_media_ava.css' %}">
+  </head>
+  <body>
+    <div class="container">
+      <div class="avatars">
+        {% for media in media_list %}
+          {% if media.media in media_edited %}
+          <div class="avatar edited">
+          {% else %}
+          <div class="avatar">
+          {% endif %}
+              <a href="{% url 'dc_parse:edit_media' media_pk=media.media %}">
+                <img src="{{ media.s }}" alt="">
+              </a>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="page">
+          <ul class="page__list">
+            {% for page in media_list.paginator.page_range %}
+              {% if page == media_list.number %}
+              <li class="page__link active"><a href="{{request.path}}?page={{page}}">{{page}}</a></li>
+              {% else %}
+              <li class="page__link"><a href="{{request.path}}?page={{page}}">{{page}}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+      </div>
+    </div>
+  </body>
+</html>

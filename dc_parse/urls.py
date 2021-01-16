@@ -24,4 +24,7 @@ urlpatterns = [
     # Edit existed models
     path('edit/test', edit_views.test, name='edit_test'),
     path('edit/media/<int:media_pk>', edit_views.edit_media, name='edit_media'),
+    # Links
+    path('edit/media/list/ava', edit_views.edit_media_list_ava, name='edit_media_list_ava'),
+    path('edit/media/list/table', edit_views.edit_media_list_table, name='edit_media_list_table'),
 ]

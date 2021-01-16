@@ -11,6 +11,12 @@ from django.utils.cache import add_never_cache_headers
 from django.views.decorators.cache import cache_page
 from django.core.cache import cache
 from django.db.models import Min
+from django.db.models.functions import Coalesce, Lower
+from django.db.models import Expression
+from django.core.paginator import Paginator
+from dc_parse.models import MediaVkPhotoThumbnail
+from datetime import datetime,timedelta
+
 
 def test(request):
     debug=request.POST
@@ -101,3 +107,59 @@ def edit_media(request,media_pk):
     # no-cache, no-store
     response['Cache-Control'] = 'no-store'
     return response
+
+def edit_media_list_ava(request):
+    # media_list_all = Media.objects.all().order_by('-pk')    #desk '-pk' or .reverse()
+    media_list_all = MediaVkPhotoThumbnail.objects.values('media','s')
+    media_edited_qs = StatUpload.objects.filter(method='edit-media').values_list('media').order_by('media').distinct()
+    media_edited = [i[0] for i in list(media_edited_qs)]    # list of edited medias
+    paginator = Paginator(media_list_all, 100) # Show 100 avas per page.
+    page = request.GET.get('page')
+    media_list = paginator.get_page(page)
+    return render(request,'edit/edit_media_list_ava.html',{
+            'media_list': media_list,
+            'media_edited': media_edited,
+            # 'debug': debug
+            })
+
+def edit_media_list_table(request):
+    media_list_all = Media.objects.all().order_by('pk')
+    paginator = Paginator(media_list_all, 25)
+    page = request.GET.get('page')
+    media_list = paginator.get_page(page)
+    avas = []
+    for media in media_list.object_list:
+        avas += [media.pk]
+    # For addiction to main query (media_list_addiction)
+    media_thumb_qs = MediaVkPhotoThumbnail.objects.filter(media__in=avas).values('media','s')
+    media_statupload_qs = StatUpload.objects.filter(media__in=avas,method='edit-media').values('media','time','action','method')
+    # dict of thumbnails {media_id:s,..}
+    media_thumb = {}
+    for media in media_thumb_qs:
+        media_thumb[media['media']] = media['s']
+    # dict of stats of editing {media_id:{time, action}}
+    media_statupload = {}
+    for mstat in media_statupload_qs:
+        if not media_statupload.get(mstat['media']):
+            media_statupload[mstat['media']] = {}
+            media_statupload[mstat['media']]['time'] = mstat['time']
+            media_statupload[mstat['media']]['action'] = mstat['action']
+        else:
+            if media_statupload[mstat['media']]['time'] < mstat['time']:
+                media_statupload[mstat['media']]['time'] = mstat['time']
+            media_statupload[mstat['media']]['action'] += ', '+mstat['action']
+
+
+    # avatars, static media_list.array_key = self.array_key
+    # media_list_addiction = []
+    # i = 0
+    # for media in media_list.object_list:
+    #     media_list_addiction.append({})
+    #     media_list_addiction[i]['avatar'] = media_thumb.get(media.pk)
+    #     i += 1
+    return render(request,'edit/edit_media_list_table.html',{
+            'media_list': media_list,
+            'media_thumb': media_thumb,
+            'media_statupload': media_statupload
+            # 'debug': debug
+            })
