@@ -20,6 +20,11 @@
         {% endfor %}
       </div>
       {% endcomment %}
+      <div class="links">
+        <a href="{% url 'dc_parse:edit_media_list_ava' %}">Ava</a>
+        <a href="{% url 'dc_parse:link_all' %}">All links</a>
+        <!-- <a href="{% url 'dc_parse:edit_media_list_table' %}">Table</a> -->
+      </div>
       <div class="media_list">
         <table>
           <caption>Media Edit in details</caption>

@@ -1,36 +1,21 @@
 {% load cache %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title>Edit media {{media.pk}} form</title>
-    <style media="all">
-      body {
-        display: grid;
-      }
-      .container {
-        width: 100%;
-        padding: 20px;
-        justify-self: center;
-      }
-      ul#id_tags_existed {
-        display: grid;
-        grid-template-columns: repeat(auto-fit,250px);
-        grid-template-rows: repeat(auto-fit,30px);
-      }
-
-      #id_description_auto, #id_description_me {
-        width: 100%;
-      }
-
-      .image img {
-        max-height: 500px;
-        max-width: 100%;
-      }
-    </style>
+    <link rel="stylesheet" href="{% static 'parse/css/edit_media.css' %}">
   </head>
   <body>
     <div class="container" style="width: 90%">
+
+      <div class="links">
+        <a href="{% url 'dc_parse:edit_media_list_ava' %}">Ava</a>
+        <a href="{% url 'dc_parse:link_all' %}">All links</a>
+        <a href="{% url 'dc_parse:edit_media_list_table' %}">Table</a>
+      </div>
+
       <h3>Edit media {{media.pk}}</h3>
       <div class="image">
         <a class="fresco"
@@ -46,7 +31,9 @@
           <button type="submit">Save</button>
       </form>
 
+      {% comment %}
       <div class="debug">{{debug}}</div>
+      {% endcomment %}
     </div>
   </body>
 </html>

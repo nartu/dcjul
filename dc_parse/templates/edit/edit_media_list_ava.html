@@ -8,6 +8,10 @@
   </head>
   <body>
     <div class="container">
+      <div class="links">
+        <a href="{% url 'dc_parse:edit_media_list_table' %}">Table</a>
+        <a href="{% url 'dc_parse:link_all' %}">All links</a>
+      </div>
       <div class="avatars">
         {% for media in media_list %}
           {% if media.media in media_edited %}

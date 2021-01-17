@@ -132,3 +132,35 @@ td:nth-child(7) {
 .page__link.active a, .page__link.active:hover a {
   color: rgba(255, 255, 255, 0.75);
 }
+
+/* Links */
+
+.links {
+  width: 230px;
+  display: grid;
+  grid-template: auto / repeat(3,1fr);
+  align-items: center;
+  justify-items: center;
+  grid-auto-columns: fit-content;
+  gap: 5px;
+  margin: 10px 0 0px 15px;
+}
+
+.links a {
+  padding: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.9);
+/*   align-self: center; */
+}
+
+.links a {
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.links a:hover {
+  color: rgba(0, 0, 0, 0.5);
+}
