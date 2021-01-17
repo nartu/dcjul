@@ -20,11 +20,17 @@ import re
 
 
 def test(request):
-    debug=request.POST
+    """ For try """
+    if not request.user.is_superuser:
+        return redirect('%s?next=%s' % (reverse('dc_parse:admin_auth'), request.path))
+    debug = {}
+    debug['post']=request.POST
     data = {'count': 7,'test_checkboxes': [1,3],'bool':True}
     media = Media.objects.get(pk=1)
     data.update({'description_add':media.description_auto})
     form = TestForm(data)
+    debug['path'] = request.path
+    debug['scheme'] = request.scheme
     # for save
     # form_media = MediaTestForm(request.POST,instance=media)
     return render(request,'edit/test.html',{
@@ -114,6 +120,9 @@ def edit_media(request,media_pk):
     return response
 
 def edit_media_list_ava(request):
+    """ All media list for edit. Avatar view """
+    if not request.user.is_superuser:
+        return redirect('%s?next=%s' % (reverse('dc_parse:admin_auth'), request.path))
     # media_list_all = Media.objects.all().order_by('-pk')    #desk '-pk' or .reverse()
     media_list_all = MediaVkPhotoThumbnail.objects.values('media','s')
     media_edited_qs = StatUpload.objects.filter(method='edit-media').values_list('media').order_by('media').distinct()
@@ -128,6 +137,9 @@ def edit_media_list_ava(request):
             })
 
 def edit_media_list_table(request):
+    """ All media list for edit. Table view """
+    if not request.user.is_superuser:
+        return redirect('%s?next=%s' % (reverse('dc_parse:admin_auth'), request.path))
     media_list_all = Media.objects.all().order_by('pk')
     paginator = Paginator(media_list_all, 25)
     page = request.GET.get('page')
@@ -153,7 +165,6 @@ def edit_media_list_table(request):
             if media_statupload[mstat['media']]['time'] < mstat['time']:
                 media_statupload[mstat['media']]['time'] = mstat['time']
             media_statupload[mstat['media']]['action'] += ', '+mstat['action']
-
 
     # avatars, static media_list.array_key = self.array_key
     # media_list_addiction = []

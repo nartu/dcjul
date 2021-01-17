@@ -15,7 +15,15 @@
       </form>
       <div class="debug">{{debug}}</div>
       <div style="width=100%">
+        <p>1</p>
         <pre>{{request.body}}</pre>
+        <p>2</p>
+        <pre>{{request.scheme}}</pre>
+        {% if request.scheme == 'http' %}
+        var 1
+        {% else %}
+        var 2
+        {% endif %}
       </div>
     </div>
   </body>

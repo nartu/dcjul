@@ -10,14 +10,27 @@
     {% block css %}
     {% endblock %}
     <meta name="viewport" content="width=device-width">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-220NN43RMM"></script>
+    {% if request.scheme == 'https' %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B2KSYWSCRR"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-220NN43RMM');
-    </script> -->
+
+      gtag('config', 'G-B2KSYWSCRR');
+    </script>
+    {% else %}
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-X62MMKJCVW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-X62MMKJCVW');
+    </script>
+    {% endif %}
   </head>
   <body>
     <div class="wrapper">

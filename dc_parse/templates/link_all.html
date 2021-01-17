@@ -12,11 +12,12 @@
       <p>VK parse</p>
       <a href="{% url 'dc_parse:vk_get_album_list' %}">All albums</a><br>
       <a href="{% url 'dc_parse:vk_get_photo_all' %}">Put all photos (without details)</a>
-      <p>VK utils</p>
-      <a href="{% url 'dc_parse:vk_utils_photo_info' %}">All avatars sizes</a>
       <p>Edit media</p>
       <a href="{% url 'dc_parse:edit_media_list_ava' %}">All media: avatar view</a><br>
       <a href="{% url 'dc_parse:edit_media_list_table' %}">All media: table view (details)</a>
+      <p>Debug</p>
+      <a href="{% url 'dc_parse:vk_utils_photo_info' %}">All VK avatars sizes</a><br>
+      <a href="{% url 'dc_parse:edit_test' %}">Edit test</a>
     </div>
   </body>
 </html>
