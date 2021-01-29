@@ -3,6 +3,7 @@
 __pycache__
 o-vs374
 vs385
+local_arch
 #npm packeges
 lib    
 *.sqlite3

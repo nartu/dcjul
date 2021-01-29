@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'dc_main',
     'dc_parse',
     'dc_gallery',
+    'dc_api'
     # 'user_visit',
     # 'EasyVisitors'
 ]
@@ -101,9 +103,11 @@ if IN_PRODUCTION:
         'PASSWORD': mysql['password'],
         'HOST': mysql['host'],
         'PORT': mysql['port'],
-        # 'OPTIONS': {
-        #     'read_default_file': '/path/to/my.cnf',
-        #     },
+        'OPTIONS': {
+                # 'read_default_file': '/path/to/my.cnf',
+                # 'init_command': 'SET default_storage_engine=INNODB',
+                'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+                },
         }
     }
     # DATABASES = {
@@ -171,3 +175,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     ('lib', os.path.join(BASE_DIR, 'lib')),
 ]
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}

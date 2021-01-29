@@ -21,5 +21,6 @@ urlpatterns = [
     path('v1/', include('dc_main.urls_v1',namespace='dc_v1')),
     path('admin/parse/', include('dc_parse.urls',namespace='dc_parse')),
     path('gallery/', include('dc_gallery.urls',namespace='dc_gallery')),
-    path('', include('dc_main.urls',namespace='dc_main'))
+    path('', include('dc_main.urls',namespace='dc_main')),
+    path('api/', include('dc_api.urls',namespace='dc_api')),
 ]
